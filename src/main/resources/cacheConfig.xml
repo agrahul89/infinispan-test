@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<infinispan xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="urn:infinispan:config:6.0 http://www.infinispan.org/schemas/infinispan-config-6.0.xsd"
+	xmlns="urn:infinispan:config:6.0">
+	
+	<global>
+        <globalJmxStatistics enabled="true" cacheManagerName="TestCacheManager" />
+	</global>
+	
+	<default></default>
+	
+	<namedCache name="testCache">
+		<locking isolationLevel="READ_COMMITTED" lockAcquisitionTimeout="3000" />
+		<persistence passivation="false">
+            <!-- <cluster fetchPersistentState="true" ignoreModifications="false" preload="false" 
+                purgeOnStartup="false" shared="false" remoteCallTimeout="0">
+                <async enabled="true" threadPoolSize="3" flushLockTimeout="5"
+                    modificationQueueSize="500" shutdownTimeout="120000" />
+                <singleton enabled="true" pushStateTimeout="10000" pushStateWhenCoordinator="true"/>
+                <properties><property name="" value="" /></properties>
+            </cluster> -->
+			<!-- <store class="org.infinispan.persistence.file.SingleFileStore" fetchPersistentState="true" 
+                ignoreModifications="false" preload="false" purgeOnStartup="false" shared="false">
+				<async enabled="true" threadPoolSize="3" flushLockTimeout="5"
+					modificationQueueSize="500" shutdownTimeout="120000" />
+                <singleton enabled="true" pushStateTimeout="10000" pushStateWhenCoordinator="true"/>
+				<properties><property name="" value="" /></properties>
+			</store> -->
+			<singleFile location="e:\cache\" fetchPersistentState="true" 
+                ignoreModifications="false" preload="false" purgeOnStartup="false" shared="false" >
+                <async enabled="false" threadPoolSize="3" flushLockTimeout="5"
+                    modificationQueueSize="500" shutdownTimeout="120000" />
+                <singleton enabled="false" pushStateTimeout="10000" pushStateWhenCoordinator="true"/>
+                <!-- <properties><property name="" value="" /></properties> -->
+            </singleFile>
+		</persistence>
+		<!-- To Use for configuration of backup Cache/Sites. Need to configure a separate Cache for Backup purpose -->
+		<!-- <sites></sites> -->
+		<!-- <transaction autoCommit="true" cacheStopTimeout="180000" transactionMode="TRANSACTIONAL" 
+            useSynchronization="true" lockingMode="PESSIMISTIC">
+            <recovery enabled="true" recoveryInfoCacheName="e:\cache\test.recovery.cache__"/>
+        </transaction> -->
+		<eviction maxEntries="1" strategy="LRU" threadPolicy="DEFAULT"/>
+		<expiration lifespan="-1"/> <!-- Never Expire -->
+		<versioning enabled="false"/> <!-- Don't maintain Cache Entry versions -->
+		<jmxStatistics enabled="true"/>
+		<storeAsBinary enabled="true" storeKeysAsBinary="true" storeValuesAsBinary="true"/>
+		<deadlockDetection enabled="true" spinDuration="500"/>
+	</namedCache>
+	
+</infinispan>
